@@ -1,0 +1,114 @@
+/* ======================================================================
+   PART (A): USER LOGIN USING SERVLET AND HTML FORM
+   ======================================================================
+   OBJECTIVE:
+   To develop a Java Servlet that accepts user credentials through 
+   an HTML form and displays a personalized welcome message upon 
+   successful login.
+====================================================================== */
+
+/* ======================================================================
+   STEP 1: HTML CODE (login.html)
+   ======================================================================
+   - This HTML file creates a login form with username and password fields.
+   - On submission, the form sends data to the servlet using POST method.
+====================================================================== */
+
+/*
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Login</title>
+</head>
+<body>
+    <h2>User Login Form</h2>
+    <form action="LoginServlet" method="post">
+        <label>Username:</label>
+        <input type="text" name="username" required><br><br>
+
+        <label>Password:</label>
+        <input type="password" name="password" required><br><br>
+
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+*/
+
+/* ======================================================================
+   STEP 2: SERVLET CODE (LoginServlet.java)
+   ======================================================================
+   - The servlet receives the form data sent via POST.
+   - It retrieves parameters using request.getParameter().
+   - It validates credentials (hardcoded for demo).
+   - If valid, displays a welcome message.
+   - If invalid, displays an error message.
+====================================================================== */
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class LoginServlet extends HttpServlet {
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Set content type
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Retrieve input data from HTML form
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Hardcoded credentials (for demo purpose)
+        String validUser = "admin";
+        String validPass = "12345";
+
+        // Validate credentials
+        if (username.equals(validUser) && password.equals(validPass)) {
+            out.println("<html><body>");
+            out.println("<h2>Welcome, " + username + "!</h2>");
+            out.println("<p>Login Successful.</p>");
+            out.println("</body></html>");
+        } else {
+            out.println("<html><body>");
+            out.println("<h2>Invalid Username or Password!</h2>");
+            out.println("<a href='login.html'>Try Again</a>");
+            out.println("</body></html>");
+        }
+
+        out.close();
+    }
+}
+
+/* ======================================================================
+   STEP 3: DEPLOYMENT DESCRIPTOR (web.xml)
+   ======================================================================
+   - This XML file maps the servlet class to a URL pattern.
+   - When "LoginServlet" is requested, it executes the above Java code.
+====================================================================== */
+
+/*
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee 
+         https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>LoginServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+*/
+
+
